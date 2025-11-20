@@ -1,11 +1,15 @@
-export default function Searchbar() {
-
+export default function Searchbar({ search, setSearch, handleSearch }) {
     return (
-        <>
-            <form>
-                <input type="text" />
-                <button>Search</button>
+        <header>
+            <form onSubmit={handleSearch}>
+                <input
+                    type="search"
+                    placeholder="Cerca un film..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <button type="submit">Cerca</button>
             </form>
-        </>
+        </header>
     )
 }
