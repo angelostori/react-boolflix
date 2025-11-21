@@ -2,21 +2,32 @@ import { useState } from "react";
 import axios from "axios";
 import Searchbar from "./components/SearchBar";
 
-const base_movie_api_url = 'https://api.themoviedb.org/3/search/movie';
+const base_api_url = 'https://api.themoviedb.org/3/search';
 
 export default function App() {
   const [search, setSearch] = useState("");
   const [movies, setMovies] = useState([]);
+  const [series, setSeries] = useState([]);
 
   function handleSearch(e) {
     e.preventDefault();
 
-    const endpoint = `${base_movie_api_url}?api_key=${import.meta.env.VITE_MOVIE_DB_API_KEY}&query=${search}`;
+    //film
+    const movie_endpoint = `${base_api_url}/movie?api_key=${import.meta.env.VITE_MOVIE_DB_API_KEY}&query=${search}`;
+    //serie
+    const tv_endpoint = `${base_api_url}/tv?api_key=${import.meta.env.VITE_MOVIE_DB_API_KEY}&query=${search}`;
 
-    axios.get(endpoint)
+    axios.get(movie_endpoint)
       .then(res => setMovies(res.data.results))
       .catch(err => console.log(err));
+
+    axios.get(tv_endpoint)
+      .then(res => setSeries(res.data.results))
+      .catch(err => console.log(err));
   }
+
+
+
 
   function getFlag(lang) {
     const flags = {
@@ -54,6 +65,9 @@ export default function App() {
         handleSearch={handleSearch}
       />
 
+      <div>
+        <h1>Film</h1>
+      </div>
       <div className="mt-4">
         {movies.map(movie => (
           <div key={movie.id}>
@@ -64,6 +78,20 @@ export default function App() {
           </div>
         ))}
       </div>
-    </div>
+      <hr />
+      <div>
+        <h1>Serie</h1>
+      </div>
+      <div className="mt-4">
+        {series.map(serie => (
+          <div key={serie.id}>
+            <h3>{serie.name}</h3>
+            <p>Titolo originale: {serie.original_name}</p>
+            <p>Lingua: {serie.original_language.toUpperCase()} {getFlag(serie.original_language)}</p>
+            <p>Voto: {serie.vote_average}</p>
+          </div>
+        ))}
+      </div>
+    </div >
   )
 }
