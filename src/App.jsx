@@ -27,7 +27,14 @@ export default function App() {
   }
 
 
+  function getImg(backdrop_path) {
+    let path;
 
+    if (!backdrop_path) {
+      return path = "https://placehold.co/500x750?text=N/A"
+    }
+    return path = `https://image.tmdb.org/t/p/w500${backdrop_path}`
+  }
 
   function getFlag(lang) {
     const flags = {
@@ -71,6 +78,7 @@ export default function App() {
       <div className="mt-4">
         {movies.map(movie => (
           <div key={movie.id}>
+            <img src={getImg(movie.poster_path)} alt={movie.title} />
             <h3>{movie.title}</h3>
             <p>Titolo originale: {movie.original_title}</p>
             <p>Lingua: {movie.original_language.toUpperCase()} {getFlag(movie.original_language)}</p>
@@ -85,6 +93,7 @@ export default function App() {
       <div className="mt-4">
         {series.map(serie => (
           <div key={serie.id}>
+            <img src={getImg(serie.poster_path)} alt={serie.title} />
             <h3>{serie.name}</h3>
             <p>Titolo originale: {serie.original_name}</p>
             <p>Lingua: {serie.original_language.toUpperCase()} {getFlag(serie.original_language)}</p>
