@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import Searchbar from "./components/SearchBar";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const base_api_url = 'https://api.themoviedb.org/3/search';
 
@@ -34,6 +35,18 @@ export default function App() {
       return path = "https://placehold.co/500x750?text=N/A"
     }
     return path = `https://image.tmdb.org/t/p/w500${backdrop_path}`
+  }
+
+  function getStars(vote_average) {
+    let vote = Math.ceil(vote_average / 2)
+    let stars = []
+    for (let i = 0; i < vote; i++) {
+      stars.push(<i key={`full-${i}`} className="bi bi-star-fill"></i>)
+    }
+    for (let i = 0; i < 5 - vote; i++) {
+      stars.push(<i key={`empty-${i}`} className="bi bi-star"></i>)
+    }
+    return stars
   }
 
   function getFlag(lang) {
@@ -82,7 +95,7 @@ export default function App() {
             <h3>{movie.title}</h3>
             <p>Titolo originale: {movie.original_title}</p>
             <p>Lingua: {movie.original_language.toUpperCase()} {getFlag(movie.original_language)}</p>
-            <p>Voto: {movie.vote_average}</p>
+            <div>Voto: <p className="text-warning">{getStars(movie.vote_average)}</p></div>
           </div>
         ))}
       </div>
@@ -97,7 +110,8 @@ export default function App() {
             <h3>{serie.name}</h3>
             <p>Titolo originale: {serie.original_name}</p>
             <p>Lingua: {serie.original_language.toUpperCase()} {getFlag(serie.original_language)}</p>
-            <p>Voto: {serie.vote_average}</p>
+            <div>Voto: <p className="text-warning">{getStars(serie.vote_average)}</p>
+            </div>
           </div>
         ))}
       </div>
